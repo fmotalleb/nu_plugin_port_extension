@@ -17,11 +17,11 @@ impl PluginCommand for PortList {
     type Plugin = PortExtension;
 
     fn name(&self) -> &str {
-        "port list-2"
+        "port list"
     }
 
     fn signature(&self) -> Signature {
-        Signature::build("port list-2")
+        Signature::build("port list")
             .switch(
                 "disable-ipv4",
                 "do not fetch ipv6 connections (ipv6 only)",
