@@ -18,6 +18,8 @@ def addcap [binpath: path] {
                 print $"sudo setcap 'cap_net_admin,cap_sys_ptrace,cap_dac_read_search=ep' '($binpath)'"
             }
         }
+    } else if ($nu.os-info.name == "windows") {
+        print $"(ansi red)For Windows Users(ansi reset): The plugin is installed successfully but keep in mind in order to fetch all executables information you must run nushell as administrator"
     }
 }
 
