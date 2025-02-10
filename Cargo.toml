@@ -1,6 +1,6 @@
 [package]
 name = "nu_plugin_port_extension"
-version = "0.102.0"
+version = "0.102.1"
 description = "A nushell plugin to list all active connections"
 homepage = "https://github.com/FMotalleb/nu_plugin_port_list"
 keywords = ["nushell", "network", "plugin"]

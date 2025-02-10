@@ -1,6 +1,6 @@
 {
   "name": "nu_plugin_port_extension",
-  "version": "0.102.0",
+  "version": "0.102.1",
   "description": "Aff nushell plugin to list all active connections",
   "license": "LICENSE",
   "type": "custom"
