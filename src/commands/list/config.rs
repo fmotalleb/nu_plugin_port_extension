@@ -49,6 +49,7 @@ impl TryFrom<&EvaluatedCall> for PortListConfig {
         builder.udp(value.missing_flag_or("disable-udp", true));
         builder.tcp(value.missing_flag_or("disable-tcp", true));
         builder.listeners_only(value.has_flag_or("listeners", false));
+        builder.process_info(value.has_flag_or("process-info", false));
         return builder
             .build()
             .map_err(|e| LabeledError::new(e.to_string()));

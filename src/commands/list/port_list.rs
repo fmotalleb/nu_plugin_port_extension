@@ -92,19 +92,19 @@ fn tcp2connection_info(
         .map(|pid| {
             ConnectionInfoBuilder::default()
                 .pid(pid.to_owned())
+                .r#type("tcp".to_string())
                 .ip_version(get_ip_version(tsi.local_addr))
                 .local_address(tsi.local_addr.to_string())
                 .local_port(tsi.local_port)
                 .remote_address(Some(tsi.remote_addr.to_string()))
                 .remote_port(Some(tsi.remote_port))
                 .state(tsi.state.to_string())
-                .process_info(Some(ProcessInfo::default()))
-                // .process_info(
-                //     processes
-                //         .get(pid)
-                //         .map(|process| ProcessInfo::from(process.to_owned()))
-                //         .map_or(None, |f| Some(f)),
-                // )
+                .process_info(
+                    processes
+                        .get(pid)
+                        .map(|process| ProcessInfo::from(process.to_owned()))
+                        .map_or(None, |f| Some(f)),
+                )
                 .to_owned()
         })
         .collect()
@@ -119,18 +119,18 @@ fn udp2connection_info(
         .map(|pid| {
             ConnectionInfoBuilder::default()
                 .pid(pid.to_owned())
+                .r#type("udp".to_string())
                 .ip_version(get_ip_version(usi.local_addr))
                 .local_address(usi.local_addr.to_string())
                 .local_port(usi.local_port)
                 .remote_address(None)
                 .remote_port(None)
-                .state("Listen".to_string())
-                .process_info(Some(ProcessInfo::default()))
-                // .process_info(
-                //     processes
-                //         .get(pid)
-                //         .map(|process| ProcessInfo::from(process.to_owned())),
-                // )
+                .state("LISTEN".to_string())
+                .process_info(
+                    processes
+                        .get(pid)
+                        .map(|process| ProcessInfo::from(process.to_owned())),
+                )
                 .to_owned()
         })
         .collect()
