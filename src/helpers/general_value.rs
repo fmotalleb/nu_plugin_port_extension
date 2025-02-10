@@ -1,4 +1,6 @@
-use nu_protocol::{Span, Value};
+use std::time::Duration;
+
+use nu_protocol::{Record, Span, Value};
 
 pub trait AsValue {
     fn as_value(self, span: Span) -> Value;
@@ -50,5 +52,22 @@ impl<T: AsValue> AsValue for Vec<T> {
             self.into_iter().map(|item| item.as_value(span)).collect(),
             span,
         )
+    }
+}
+impl AsValue for bool {
+    fn as_value(self, span: Span) -> Value {
+        Value::bool(self, span)
+    }
+}
+
+impl AsValue for Duration {
+    fn as_value(self, span: Span) -> Value {
+        Value::duration(self.as_nanos().try_into().unwrap_or_else(|_| -1), span)
+    }
+}
+
+impl AsValue for Record {
+    fn as_value(self, span: Span) -> Value {
+        Value::record(self, span)
     }
 }
