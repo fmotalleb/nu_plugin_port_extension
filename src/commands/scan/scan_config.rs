@@ -1,4 +1,4 @@
-use std::time::Duration;
+use std::{net::SocketAddr, str::FromStr, time::Duration};
 
 use derive_builder::Builder;
 use derive_getters::Getters;
@@ -14,6 +14,18 @@ pub(super) struct ScanConfig {
     timeout: Duration,
     send: Option<Vec<u8>>,
     receive_byte_count: Option<i64>,
+}
+
+impl ScanConfig {
+    pub fn get_socket_addr(&self) -> Result<SocketAddr, LabeledError> {
+        let addr = format!("{}:{}", self.target_address, self.target_port);
+        SocketAddr::from_str(&addr).map_err(|e| {
+            LabeledError::new(format!(
+                "cannot parse given address as socket address: {}",
+                e
+            ))
+        })
+    }
 }
 
 impl TryFrom<&EvaluatedCall> for ScanConfig {

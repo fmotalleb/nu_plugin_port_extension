@@ -17,12 +17,7 @@ pub(super) fn scan(cfg: ScanConfig) -> Result<ScanResult<String>, LabeledError> 
     result.port(cfg.target_port().to_owned());
     let now = Instant::now();
     let is_open = check_connection(
-        SocketAddr::parse_ascii(cfg.target_address().as_bytes()).map_err(|e| {
-            LabeledError::new(format!(
-                "cannot parse given address as socket address: {}",
-                e
-            ))
-        })?,
+        cfg.get_socket_addr()?,
         cfg.timeout().to_owned(),
         cfg.send().to_owned(),
         cfg.receive_byte_count().to_owned(),
