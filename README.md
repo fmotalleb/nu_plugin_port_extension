@@ -8,6 +8,11 @@ This Nushell plugin introduces two subcommands under `port`:
 ## Installation
 
 To install the plugin, follow these steps:
+- remove old plugins:
+```bash
+plugin rm port_list
+plugin rm port_scan
+```
 
 - using [nupm](https://github.com/nushell/nupm)
 
@@ -29,6 +34,7 @@ plugin add target/release/nu_plugin_port_extension
 
 ```bash
 cargo install nu_plugin_port_extension
+# or cargo install --git https://github.com/FMotalleb/nu_plugin_port_extension.git (sometimes I am unable to update my package due to sanctions)
 plugin add ~/.cargo/bin/nu_plugin_port_extension
 ```
 
@@ -90,7 +96,6 @@ Output:
 ╭─────────┬─────────╮
 │ address │ 8.8.8.8 │
 │ port    │ 53      │
-│ result  │ Open    │
 │ is_open │ true    │
 │ elapsed │ 40ms    │
 ╰─────────┴─────────╯
