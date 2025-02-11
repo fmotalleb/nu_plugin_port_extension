@@ -60,9 +60,21 @@ The `port list` command displays every open connection on the network interface.
 - `-l, --listeners`            : Only show listeners (equivalent to state == "LISTEN")
 - `-p, --process-info`         : Include process info (name, cmd, binary path)
 
+#### Examples
+```bash
+port list -p | take 1
+```
+
+|pid|type|ip_version|local_address|local_port|remote_address|remote_port|state|process_name|cmd|exe_path|process_status|process_user|process_group|process_effective_user|process_effective_group|process_environments|
+|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
+|11536|tcp|4|127.0.0.1|1093|127.0.0.1|1108|ESTABLISHED|steam.exe|[C:\Program Files (x86)\Steam\steam.exe, -silent]|C:\Program Files (x86)\Steam\steam.exe|Runnable|S-1-5-21-1866364434-2240987276-2714941485-1001||||[]|
+
+
+
 ### `port scan`
 
 The `port scan` command detects open ports on a target IP, similar to `nc -vz {ip} {port}`.
+the limitation is it only supports TCP ports for now
 
 #### Usage
 
@@ -84,7 +96,7 @@ The `port scan` command detects open ports on a target IP, similar to `nc -vz {i
 
 #### Examples
 
-Check if port 53 is open on Google's public DNS:
+Check if port 53 (TCP) is open on Google's public DNS:
 
 ```sh
 > port scan 8.8.8.8 53 -t 1sec
