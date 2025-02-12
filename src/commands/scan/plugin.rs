@@ -12,7 +12,6 @@ use std::vec;
 use super::scan;
 use super::scan_config::ScanConfig;
 
-
 #[derive(Default)]
 pub struct PortScan {}
 
@@ -20,10 +19,6 @@ impl PortScan {
     pub(crate) fn new() -> PortScan {
         PortScan {}
     }
-}
-
-impl PortScan {
-    
 }
 
 impl PluginCommand for PortScan {
