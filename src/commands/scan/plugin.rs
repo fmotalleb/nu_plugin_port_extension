@@ -53,6 +53,7 @@ impl PluginCommand for PortScan {
                  "bytes to receive from the target (possibly after sending the `send` data) to mark the connection as open", 
                  Some('b'),
                 )
+            .switch("udp", "udp scan mod (send and receive-byte-count flags will be mandatory due to how udp works)", Some('u'))
             .category(Category::Network)
     }
     fn description(&self) -> &str {
@@ -70,6 +71,7 @@ impl PluginCommand for PortScan {
                   .port(53)
                   .is_open(true)
                   .elapsed(Duration::from_millis(27))
+                  .received_data(None)
                   .build().unwrap().as_value(Span::unknown())
                 ),
             },
@@ -82,7 +84,22 @@ impl PluginCommand for PortScan {
                     .port(54)
                     .is_open(false)
                     .elapsed(Duration::from_secs(1))
+                    .received_data(None)
                     .build().unwrap().as_value(Span::unknown())
+                ),
+            },
+            
+            Example {
+                example: "port scan 8.8.8.8 53 --udp --receive-byte-count 50 --send ('AAABAAABAAAAAAAAA3d3dwZnb29nbGUDY29tAAABAAEK' | decode base64)",
+                description: "send a simple dns request to udp port 53 on 8.8.8.8 (Google's public dns) and return the connection time + received data from dns",
+                result: Some(
+                  ScanResultBuilder::default()
+                  .address("8.8.8.8")
+                  .port(53)
+                  .is_open(true)
+                  .elapsed(Duration::from_millis(27))
+                  .received_data(Some(vec![0, 0, 129, 130, 0, 1, 0, 0, 0, 0, 0, 0, 3, 119, 119, 119, 6, 103, 111, 111, 103, 108, 101, 3, 99, 111, 109,0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]))
+                  .build().unwrap().as_value(Span::unknown())
                 ),
             },
             Example {
