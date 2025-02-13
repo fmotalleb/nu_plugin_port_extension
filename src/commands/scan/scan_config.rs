@@ -65,6 +65,7 @@ impl TryFrom<&EvaluatedCall> for ScanConfig {
         builder.send(send_data);
         let receive_byte_count = match call.get_flag_value("receive-byte-count") {
             Some(Value::Int { val, .. }) => Some(val),
+            Some(Value::Filesize { val, .. }) => Some(val.get()),
             _ => None,
         };
         let udp = call.has_flag_or("udp", false);
