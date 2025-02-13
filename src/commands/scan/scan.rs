@@ -82,18 +82,20 @@ fn check_tcp(
 ) -> (bool, Option<Vec<u8>>) {
     match TcpStream::connect_timeout(&address, timeout) {
         Ok(mut stream) => {
+            if let Err(err) = stream.set_read_timeout(Some(timeout)) {
+                eprintln!("Error setting read timeout, {}", err);
+                return (false, None);
+            }
+            if let Err(err) = stream.set_write_timeout(Some(timeout)) {
+                eprintln!("Error setting read timeout, {}", err);
+                return (false, None);
+            }
             if let Some(data) = send_data {
                 if let Err(err) = stream.write_all(&data) {
                     eprintln!("Error writing to socket stream, {}", err);
                     return (false, None);
                 }
             }
-
-            if let Err(err) = stream.set_read_timeout(Some(timeout)) {
-                eprintln!("Error setting read timeout, {}", err);
-                return (false, None);
-            }
-
             if let Some(receive_byte_count) = receive_byte_count {
                 // eprintln!("Wait to read the amount of bytes requested");
                 let buffer: Result<Vec<u8>, std::io::Error> =
