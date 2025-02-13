@@ -3,7 +3,9 @@ use std::{net::SocketAddr, str::FromStr, time::Duration};
 use derive_builder::Builder;
 use derive_getters::Getters;
 use nu_plugin::EvaluatedCall;
-use nu_protocol::{LabeledError, Value};
+use nu_protocol::{LabeledError, Span, Value};
+
+use crate::helpers::FlagHelper;
 
 const DEFAULT_TIMEOUT: Duration = Duration::SECOND;
 
@@ -14,6 +16,7 @@ pub(super) struct ScanConfig {
     timeout: Duration,
     send: Option<Vec<u8>>,
     receive_byte_count: Option<i64>,
+    udp: bool,
 }
 
 impl ScanConfig {
@@ -58,11 +61,20 @@ impl TryFrom<&EvaluatedCall> for ScanConfig {
             Some(Value::Binary { val, .. }) => Some(val),
             _ => None,
         };
+        let send_data_exists = send_data.is_some();
         builder.send(send_data);
         let receive_byte_count = match call.get_flag_value("receive-byte-count") {
             Some(Value::Int { val, .. }) => Some(val),
             _ => None,
         };
+        let udp = call.has_flag_or("udp", false);
+        builder.udp(udp);
+        if udp && (receive_byte_count.is_none() || !send_data_exists) {
+            return Err(LabeledError::new(
+                "when udp flag is provided receive byte count and send data are mandatory",
+            )
+            .with_label("udp flag is provided but either one of send or receive-byte-count arguments are missing (both are mandatory)", call.get_flag_span("udp").unwrap_or(Span::unknown())));
+        }
         builder.receive_byte_count(receive_byte_count);
         builder.build().map_err(|e| {
             LabeledError::new(format!(

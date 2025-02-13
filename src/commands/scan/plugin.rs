@@ -53,6 +53,7 @@ impl PluginCommand for PortScan {
                  "bytes to receive from the target (possibly after sending the `send` data) to mark the connection as open", 
                  Some('b'),
                 )
+            .switch("udp", "udp scan mod (send and receive-byte-count flags will be mandatory due to how udp works)", Some('u'))
             .category(Category::Network)
     }
     fn description(&self) -> &str {
