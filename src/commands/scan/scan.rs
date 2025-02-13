@@ -17,20 +17,16 @@ pub(super) fn scan(cfg: ScanConfig) -> Result<ScanResult<String>, LabeledError> 
     result.address(cfg.target_address().to_owned());
     result.port(cfg.target_port().to_owned());
     let now = Instant::now();
-    let (is_open, data) = match cfg.udp() {
-        true => check_udp(
-            cfg.get_socket_addr()?,
-            cfg.timeout().to_owned(),
-            cfg.send().to_owned().unwrap(),
-            cfg.receive_byte_count().to_owned().unwrap(),
-        ),
-        false => check_tcp(
-            cfg.get_socket_addr()?,
-            cfg.timeout().to_owned(),
-            cfg.send().to_owned(),
-            cfg.receive_byte_count().to_owned(),
-        ),
+    let check_method = match cfg.udp() {
+        true => check_udp,
+        false => check_tcp,
     };
+    let (is_open, data) = check_method(
+        cfg.get_socket_addr()?,
+        cfg.timeout().to_owned(),
+        cfg.send().to_owned(),
+        cfg.receive_byte_count().to_owned(),
+    );
     result.elapsed(now.elapsed());
     result.is_open(is_open);
     result.received_data(data);
@@ -40,8 +36,8 @@ pub(super) fn scan(cfg: ScanConfig) -> Result<ScanResult<String>, LabeledError> 
 fn check_udp(
     address: SocketAddr,
     timeout: Duration,
-    send_data: Vec<u8>,
-    receive_byte_count: i64,
+    send_data: Option<Vec<u8>>,
+    receive_byte_count: Option<i64>,
 ) -> (bool, Option<Vec<u8>>) {
     match UdpSocket::bind("0.0.0.0:0") {
         Ok(socket) => {
@@ -54,12 +50,12 @@ fn check_udp(
                 eprintln!("Error setting write timeout, {}", err);
                 return (false, None);
             }
-            if let Err(err) = socket.send_to(&send_data, address) {
+            if let Err(err) = socket.send_to(&send_data.unwrap(), address) {
                 eprintln!("Error sending data, {}", err);
                 return (false, None);
             }
 
-            let mut buffer = vec![0; receive_byte_count as usize];
+            let mut buffer = vec![0; receive_byte_count.unwrap() as usize];
             match socket.peek(&mut buffer) {
                 Ok(_) => (true, Some(buffer)),
                 Err(err) => {
