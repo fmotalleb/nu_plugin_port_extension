@@ -26,32 +26,32 @@ impl PluginCommand for PortScan {
     }
     fn signature(&self) -> Signature {
         Signature::build("port scan")
-.required(
-"target IP",
-SyntaxShape::String,
-"target IP address to check for open port",
-)
-.required("port", SyntaxShape::Int, "port to be checked")
-.named(
-"timeout",
-SyntaxShape::Duration,
-"time before giving up the connection. (default: 1 Second)",
-Some('t'),
-)
-.named(
-"send",
-SyntaxShape::OneOf(vec![SyntaxShape::String,SyntaxShape::Binary]),
-"data to send to the target at beginning of the connection",
-Some('s'),
-)
-.named(
-"receive-byte-count",
- SyntaxShape::Int,
- "bytes to receive from the target (possibly after sending the `send` data) to mark the connection as open", 
- Some('b'),
-)
-.switch("udp", "udp scan mod (send and receive-byte-count flags will be mandatory due to how udp works)", Some('u'))
-.category(Category::Network)
+        .required(
+        "target IP",
+        SyntaxShape::String,
+        "target IP address to check for open port",
+        )
+        .required("port", SyntaxShape::Int, "port to be checked")
+        .named(
+        "timeout",
+        SyntaxShape::Duration,
+        "time before giving up the connection. (default: 1 Second)",
+        Some('t'),
+        )
+        .named(
+        "send",
+        SyntaxShape::OneOf(vec![SyntaxShape::String,SyntaxShape::Binary]),
+        "data to send to the target at beginning of the connection",
+        Some('s'),
+        )
+        .named(
+        "receive-byte-count",
+         SyntaxShape::OneOf(vec![SyntaxShape::Filesize,SyntaxShape::Int]),
+         "bytes to receive from the target (possibly after sending the `send` data) to mark the connection as open", 
+         Some('b'),
+        )
+        .switch("udp", "udp scan mod (send and receive-byte-count flags will be mandatory due to how udp works)", Some('u'))
+        .category(Category::Network)
     }
     fn description(&self) -> &str {
         "The `port scan` command serves a similar purpose to the `nc -vz {ip} {port}` command,\nIt allows you to detect open ports on a target and provides valuable information about the connection time."
