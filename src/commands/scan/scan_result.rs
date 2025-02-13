@@ -11,6 +11,7 @@ pub(super) struct ScanResult<T: AsValue + ToString> {
     port: u16,
     is_open: bool,
     elapsed: Duration,
+    received_data: Option<Vec<u8>>,
 }
 
 impl<T: AsValue + ToString> AsValue for ScanResult<T> {
@@ -20,6 +21,7 @@ impl<T: AsValue + ToString> AsValue for ScanResult<T> {
             "port" => self.port.as_value(span),
             "is_open"=> self.is_open.as_value(span),
             "elapsed" =>  self.elapsed.as_value(span),
+            "received_data" =>  self.received_data.as_value(span),
         }
         .as_value(span)
     }

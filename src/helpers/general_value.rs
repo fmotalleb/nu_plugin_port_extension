@@ -71,3 +71,9 @@ impl AsValue for Record {
         Value::record(self, span)
     }
 }
+
+impl AsValue for Vec<u8> {
+    fn as_value(self, span: Span) -> Value {
+        Value::binary(self, span)
+    }
+}
