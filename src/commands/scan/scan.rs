@@ -57,7 +57,7 @@ fn check_udp(
 
             let mut buffer = vec![0; receive_byte_count.unwrap() as usize];
             match socket.peek(&mut buffer) {
-                Ok(_) => (true, Some(buffer)),
+                Ok(size) => (true, Some(buffer[..size].to_vec())),
                 Err(err) => {
                     eprintln!("Error receiving data, {}", err);
                     (false, None)
