@@ -7,7 +7,7 @@ use nu_protocol::{LabeledError, Span, Value};
 
 use crate::helpers::FlagHelper;
 
-const DEFAULT_TIMEOUT: Duration = Duration::SECOND;
+const DEFAULT_TIMEOUT: Duration = Duration::from_secs(1);
 
 #[derive(Default, Clone, Builder, Debug, Getters)]
 pub(super) struct ScanConfig {
