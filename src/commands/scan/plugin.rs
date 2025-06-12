@@ -57,7 +57,7 @@ impl PluginCommand for PortScan {
         "The `port scan` command serves a similar purpose to the `nc -vz {ip} {port}` command,\nIt allows you to detect open ports on a target and provides valuable information about the connection time."
     }
 
-    fn examples(&self) -> Vec<Example> {
+    fn examples(&self) -> Vec<Example<'_>> {
         vec![
             Example {
                 example: "port scan 8.8.8.8 53 -t 1sec",
