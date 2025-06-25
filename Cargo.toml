@@ -3,7 +3,11 @@ name = "nu_plugin_port_extension"
 version = "0.105.1"
 description = "A nushell plugin to list all active connections and scanning ports on a target address"
 homepage = "https://github.com/FMotalleb/nu_plugin_port_list"
-keywords = ["nushell", "network", "plugin"]
+keywords = [
+  "nushell",
+  "network",
+  "plugin",
+]
 license = "MIT"
 readme = "README.md"
 repository = "https://github.com/FMotalleb/nu_plugin_port_list"
@@ -13,9 +17,11 @@ edition = "2024"
 derive_builder = "0.20.2"
 derive-getters = "0.5.0"
 netstat2 = "0.11.1"
-nu-plugin = "0.105.1"
 sysinfo = "0.35.2"
 
+nu-plugin = { version = "0.105.1" }
 [dependencies.nu-protocol]
-features = ["plugin"]
+features = [
+  "plugin",
+]
 version = "0.105.1"
