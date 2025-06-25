@@ -1,7 +1,1 @@
-{
-  "name": "nu_plugin_port_extension",
-  "version": "0.104.0",
-  "description": "A nushell plugin to list all active connections and test tcp+udp ports accessibility on a remote server",
-  "license": "LICENSE",
-  "type": "custom"
-}
+{name: nu_plugin_port_extension, version: "0.105.1", description: "A nushell plugin to list all active connections and test tcp+udp ports accessibility on a remote server", license: LICENSE, type: custom}
