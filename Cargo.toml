@@ -23,7 +23,5 @@ sysinfo = "0.36.1"
 version = "0.106.1"
 
 [dependencies.nu-protocol]
-features = [
-    "plugin",
-]
+features = ["plugin"]
 version = "0.106.1"
