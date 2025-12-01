@@ -75,7 +75,7 @@ port scan 8.8.8.8 53 -t 1sec
 
 #### 🔄 Example: Scan a Range of Ports on `127.0.0.1` and Filter Open Ports  
 ```bash
-7880..8000 | each { |it| port scan 127.0.0.1 $it -t 1ms } | where result == Open
+7880..8000 | each { |it| port scan 127.0.0.1 $it -t 1ms } | where is_open
 ```  
 
 ---
