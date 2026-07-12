@@ -1,4 +1,4 @@
-use std log
+use std/log
 
 def addcap [binpath: path] {
     if ($nu.os-info.name == "linux") {
