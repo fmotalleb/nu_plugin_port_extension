@@ -57,8 +57,8 @@ impl TryFrom<&EvaluatedCall> for ScanConfig {
         builder.timeout(Duration::from_nanos(timeout));
 
         let send_data = match call.get_flag_value("send") {
-            Some(Value::String { val, .. }) => Some(val.chars().map(|i| i as u8).collect()),
-            Some(Value::Binary { val, .. }) => Some(val),
+            Some(Value::String { val, .. }) => Some(val.into_bytes()),
+            Some(Value::Binary { val, .. }) => Some(val.into_owned()),
             _ => None,
         };
         let send_data_exists = send_data.is_some();
